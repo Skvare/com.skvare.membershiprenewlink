@@ -188,6 +188,10 @@ function membershiprenewlink_civicrm_links($op, $objectName, $objectId, &$links,
   if ($objectName == 'Membership' && in_array($op, ['membership.selector.row', 'membership.tab.row'])) {
     $priceset_renewal_link_contribution_page = civicrm_api3('Setting', 'getvalue', ['name' => 'priceset_renewal_link_contribution_page']);
     if ($priceset_renewal_link_contribution_page) {
+      $isRleated = CRM_Core_DAO::getFieldValue('CRM_Member_DAO_Membership', $objectId, 'owner_membership_id');
+      if ($isRleated) {
+        return;
+      }
       $values['page_id'] = $priceset_renewal_link_contribution_page;
       $links[] = [
         'name' => ts('Renew Online'),
